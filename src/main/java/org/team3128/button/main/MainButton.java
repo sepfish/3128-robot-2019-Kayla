@@ -72,16 +72,6 @@ public class MainButton extends NarwhalRobot {
 	//motor1 = new TalonSRX( motor id )
 jstick = new Joystick(0);
 lm = new ListenerManager(jstick);
-
-    }
-    
-    @Override
-    protected void constructAutoPrograms() {
-    }
-
-	@Override
-	protected void setupListeners() {
-
 lm.addMultiListener(() -> {
             if (!driveCmdRunning.isRunning) {
                 tankDrive.arcadeDrive(
@@ -93,6 +83,16 @@ lm.addMultiListener(() -> {
             }
 			
         }, "MoveTurn", "MoveForwards", "Throttle");
+
+    }
+    
+    @Override
+    protected void constructAutoPrograms() {
+    }
+
+	@Override
+	protected void setupListeners() {
+
 
     }
 
