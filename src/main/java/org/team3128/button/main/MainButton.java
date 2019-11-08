@@ -60,14 +60,18 @@ import java.io.OutputStream;
 //start typing the stuff to make this a robot that isn't non-functional and bad and blank and boring and stuff thanks lol
     // - Mason Holst, "Helpful Reminders", published November 2019
 
-public ListenerManager lm;
+ListenerManager lm;
+TalonSRX motor1;
+Joystick jstick;
 
 public class MainButton extends NarwhalRobot {
 
 
 	@Override
-	protected void constructHardware()
-	{
+	protected void constructHardware() {
+	//motor1 = new TalonSRX( motor id )
+jstick = new Joystick(0);
+lm = new ListenerManager(jstick);
 
     }
     
