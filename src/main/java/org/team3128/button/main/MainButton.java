@@ -60,6 +60,8 @@ import java.io.OutputStream;
 //start typing the stuff to make this a robot that isn't non-functional and bad and blank and boring and stuff thanks lol
     // - Mason Holst, "Helpful Reminders", published November 2019
 
+public ListenerManager lm;
+
 public class MainButton extends NarwhalRobot {
 
 
@@ -75,6 +77,18 @@ public class MainButton extends NarwhalRobot {
 
 	@Override
 	protected void setupListeners() {
+
+lm.addMultiListener(() -> {
+            if (!driveCmdRunning.isRunning) {
+                tankDrive.arcadeDrive(
+                    -0.7 * RobotMath.thresh(lm.getAxis("MoveTurn"), 0.1),
+                    -1.0 * RobotMath.thresh(lm.getAxis("MoveForwards"), 0.1),
+                    -1.0 * lm.getAxis("Throttle"),
+                     true
+                );		
+            }
+			
+        }, "MoveTurn", "MoveForwards", "Throttle");
 
     }
 
