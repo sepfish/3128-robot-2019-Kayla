@@ -83,32 +83,31 @@ public class MainButton extends NarwhalRobot {
 		
 		driveCmdRunning = new DriveCommandRunning();
 		
-		double wheelCirc = 13.21;
-		double wheelBase;
-		int driveMaxSpeed;
+		double wheelCirc = 13.21 * Length.in;
+		double wheelBase = 32.3 * Length.in;
+		int driveMaxSpeed = 3700;
 		
 		SRXTankDrive.initialize(motor, motor2, wheelCirc, wheelBase, driveMaxSpeed);
 		drive = SRXTankDrive.getInstance();
-	
 
     }
     
     @Override
     protected void constructAutoPrograms() {
+	    NarwhalDashboard.addAuto("Auto Test", new CMDAutoTest()); //this doesn't actually exist yet
     }
 
 	@Override
 	protected void setupListeners() {
 		lm.addMultiListener(() -> 
-			if (!driveCmdRunning.isRunning) {
-				tankDrive.arcadeDrive(
-					-0.7 * RobotMath.thresh(lm.getAxis("MoveTurn"), 0.1),
-					-1.0 * RobotMath.thresh(lm.getAxis("MoveForwards"), 0.1),
-					-1.0 * lm.getAxis("Throttle"),
-					true);		
-			}
-			
-        }, "MoveTurn", "MoveForwards", "Throttle");
+				    if (!driveCmdRunning.isRunning) {
+					    tankDrive.arcadeDrive(
+						    -0.7 * RobotMath.thresh(lm.getAxis("MoveTurn"), 0.1),
+						    -1.0 * RobotMath.thresh(lm.getAxis("MoveForwards"), 0.1),
+						    -1.0 * lm.getAxis("Throttle"),
+						    true);		
+				    }
+		}, "MoveTurn", "MoveForwards", "Throttle");
 
     }
 
