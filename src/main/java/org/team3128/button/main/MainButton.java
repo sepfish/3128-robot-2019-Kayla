@@ -65,24 +65,31 @@ TalonSRX motor1;
 Joystick jstick;
 
 public class MainButton extends NarwhalRobot {
-
-
+	
+	public TalonSRX motor; //motors
+	public TalonSRX motor2;
+	public SRXTankDrive drive; 
+	public Joystick joystick;
+	public ListenerManager lm; //listener thing
+	private DriveCommandRunning driveCmdRunning; //its only purpose is to say if something is happening
+	
 	@Override
 	protected void constructHardware() {
-	//motor1 = new TalonSRX( motor id )
-jstick = new Joystick(0);
-lm = new ListenerManager(jstick);
-lm.addMultiListener(() -> {
-            if (!driveCmdRunning.isRunning) {
-                tankDrive.arcadeDrive(
-                    -0.7 * RobotMath.thresh(lm.getAxis("MoveTurn"), 0.1),
-                    -1.0 * RobotMath.thresh(lm.getAxis("MoveForwards"), 0.1),
-                    -1.0 * lm.getAxis("Throttle"),
-                     true
-                );		
-            }
-			
-        }, "MoveTurn", "MoveForwards", "Throttle");
+		motor = new TalonSRX(15);
+		motor2 = new TalonSRX(3);
+		joystick = new Joystick(1);
+		lm = new ListenerManager (joystick);
+		addListenerManager(lm);
+		
+		driveCmdRunning = new DriveCommandRunning();
+		
+		double wheelCirc = 13.21;
+		double wheelBase;
+		int driveMaxSpeed;
+		
+		SRXTankDrive.initialize(motor, motor2, wheelCirc, wheelBase, driveMaxSpeed);
+		drive = SRXTankDrive.getInstance();
+	
 
     }
     
@@ -92,7 +99,16 @@ lm.addMultiListener(() -> {
 
 	@Override
 	protected void setupListeners() {
-
+		lm.addMultiListener(() -> 
+			if (!driveCmdRunning.isRunning) {
+				tankDrive.arcadeDrive(
+					-0.7 * RobotMath.thresh(lm.getAxis("MoveTurn"), 0.1),
+					-1.0 * RobotMath.thresh(lm.getAxis("MoveForwards"), 0.1),
+					-1.0 * lm.getAxis("Throttle"),
+					true);		
+			}
+			
+        }, "MoveTurn", "MoveForwards", "Throttle");
 
     }
 
