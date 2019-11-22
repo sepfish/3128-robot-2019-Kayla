@@ -66,8 +66,10 @@ Joystick jstick;
 
 public class MainButton extends NarwhalRobot {
 	
-	public TalonSRX motor; //motors
-	public TalonSRX motor2;
+	public TalonSRX leftMotor; //motors (leaders)
+	public TalonSRX rightMotor;
+	public VictorSPX leftFollow; //followers
+	public VictorSPX rightFollow;
 	public SRXTankDrive drive; 
 	public Joystick joystick;
 	public ListenerManager lm; //listener thing
@@ -75,8 +77,10 @@ public class MainButton extends NarwhalRobot {
 	
 	@Override
 	protected void constructHardware() {
-		motor = new TalonSRX(15);
-		motor2 = new TalonSRX(3);
+		leftMotor = new TalonSRX(13);
+		rightMotor = new TalonSRX(15);
+		leftFollow = new VictorSPX(5);
+		rightFollow = new VictorSPX(6);
 		joystick = new Joystick(1);
 		lm = new ListenerManager (joystick);
 		addListenerManager(lm);
@@ -87,36 +91,47 @@ public class MainButton extends NarwhalRobot {
 		double wheelBase = 32.3 * Length.in;
 		int driveMaxSpeed = 3700;
 		
-		SRXTankDrive.initialize(motor, motor2, wheelCirc, wheelBase, driveMaxSpeed);
+		SRXTankDrive.initialize(leftMotor, rightMotor, wheelCirc, wheelBase, driveMaxSpeed); //you should probably look at this method in the editor
 		drive = SRXTankDrive.getInstance();
 
     }
     
     @Override
     protected void constructAutoPrograms() {
-	    NarwhalDashboard.addAuto("Auto Test", new CMDAutoTest()); //this doesn't actually exist yet
+	    NarwhalDashboard.addAuto("Auto Test", new CMDAutoTest()); //this doesn't actually exist yet whoops
     }
 
 	@Override
-	protected void setupListeners() {
+	protected void setupListeners() { //joystick does stuff
 		lm.addMultiListener(() -> 
-				    if (!driveCmdRunning.isRunning) {
-					    tankDrive.arcadeDrive(
-						    -0.7 * RobotMath.thresh(lm.getAxis("MoveTurn"), 0.1),
+				    if (!driveCmdRunning.isRunning) { //??
+					    drive.arcadeDrive( //update motor values
+						    -0.7 * RobotMath.thresh(lm.getAxis("MoveTurn"), 0.1), //prevents teeny movements from doing stuff
 						    -1.0 * RobotMath.thresh(lm.getAxis("MoveForwards"), 0.1),
 						    -1.0 * lm.getAxis("Throttle"),
 						    true);		
 				    }
 		}, "MoveTurn", "MoveForwards", "Throttle");
-
+		
+		//left forward button example?
+		lm.nameControl(new Button(#), "leftForward");
+		lm.addButtonDownListener("leftForward", () -> {
+			drive.tankDrive(1, 0);
+		});
+		lm.addButtonUpListener("leftForward", () -> {
+			drive.tankDrive(0, 0);
+		});
+		
     }
 
     @Override
     protected void teleopPeriodic() {
+	    //nothing
     }
 
     @Override
     protected void updateDashboard() {
+	    //nothing
 
     }
 
