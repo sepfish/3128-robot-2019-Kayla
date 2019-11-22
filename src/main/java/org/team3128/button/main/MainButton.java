@@ -85,6 +85,14 @@ public class MainButton extends NarwhalRobot {
 		lm = new ListenerManager (joystick);
 		addListenerManager(lm);
 		
+		leftFollower.set(ControlMode.Follower, leftMotor.getDeviceID());
+		rightFollower.set(ControlMode.Follower, rightMotor.getDeviceID());
+		
+		leftMotor.setInverted(false);
+		leftFollower.setInverted(false);
+		rightMotor.setInverted(true);
+		rightFollower.setInverted(true);
+		
 		driveCmdRunning = new DriveCommandRunning();
 		
 		double wheelCirc = 13.21 * Length.in;
