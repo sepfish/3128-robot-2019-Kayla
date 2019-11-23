@@ -14,6 +14,7 @@ package org.team3128.button.main;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;;
 
 import org.team3128.athos.autonomous.*;
 import org.team3128.athos.util.PrebotDeepSpaceConstants;
@@ -60,16 +61,12 @@ import java.io.OutputStream;
 //start typing the stuff to make this a robot that isn't non-functional and bad and blank and boring and stuff thanks lol
     // - Mason Holst, "Helpful Reminders", published November 2019
 
-ListenerManager lm;
-TalonSRX motor1;
-Joystick jstick;
-
 public class MainButton extends NarwhalRobot {
 	
 	public TalonSRX leftMotor; //motors (leaders)
 	public TalonSRX rightMotor;
-	public VictorSPX leftFollow; //followers
-	public VictorSPX rightFollow;
+	public VictorSPX leftFollower; //followers
+	public VictorSPX rightFollower;
 	public SRXTankDrive drive; 
 	public Joystick joystick;
 	public ListenerManager lm; //listener thing
@@ -79,8 +76,8 @@ public class MainButton extends NarwhalRobot {
 	protected void constructHardware() {
 		leftMotor = new TalonSRX(13);
 		rightMotor = new TalonSRX(15);
-		leftFollow = new VictorSPX(5);
-		rightFollow = new VictorSPX(6);
+		leftFollower = new VictorSPX(5);
+		rightFollower = new VictorSPX(6);
 		joystick = new Joystick(1);
 		lm = new ListenerManager (joystick);
 		addListenerManager(lm);
@@ -106,12 +103,16 @@ public class MainButton extends NarwhalRobot {
     
     @Override
     protected void constructAutoPrograms() {
-	    NarwhalDashboard.addAuto("Auto Test", new CMDAutoTest()); //this doesn't actually exist yet whoops
+	    //NarwhalDashboard.addAuto("Auto Test", new CMDAutoTest()); //this doesn't actually exist yet whoops
     }
 
 	@Override
 	protected void setupListeners() { //joystick does stuff
-		lm.addMultiListener(() -> 
+		lm.nameControl(ControllerExtreme3D.TWIST, "MoveTurn");
+		lm.nameControl(ControllerExtreme3D.JOYY, "MoveForwards");
+		lm.nameControl(ControllerExtreme3D.THROTTLE, "Throttle");
+
+		lm.addMultiListener(() -> {
 				    if (!driveCmdRunning.isRunning) { //??
 					    drive.arcadeDrive( //update motor values
 						    -0.7 * RobotMath.thresh(lm.getAxis("MoveTurn"), 0.1), //prevents teeny movements from doing stuff
@@ -121,7 +122,7 @@ public class MainButton extends NarwhalRobot {
 				    }
 		}, "MoveTurn", "MoveForwards", "Throttle");
 		
-		//left forward button example?
+		/*left forward button example?
 		lm.nameControl(new Button(#), "leftForward");
 		lm.addButtonDownListener("leftForward", () -> {
 			drive.tankDrive(1, 0);
@@ -129,7 +130,7 @@ public class MainButton extends NarwhalRobot {
 		lm.addButtonUpListener("leftForward", () -> {
 			drive.tankDrive(0, 0);
 		});
-		
+		*/
     }
 
     @Override
