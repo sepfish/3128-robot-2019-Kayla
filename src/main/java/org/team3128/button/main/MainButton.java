@@ -71,6 +71,7 @@ public class MainButton extends NarwhalRobot {
 	public Joystick joystick;
 	public ListenerManager lm; //listener thing
 	private DriveCommandRunning driveCmdRunning; //its only purpose is to say if something is happening
+	public Command commands;
 	
 	@Override
 	protected void constructHardware() {
@@ -103,7 +104,11 @@ public class MainButton extends NarwhalRobot {
     
     @Override
     protected void constructAutoPrograms() {
-	    //NarwhalDashboard.addAuto("Auto Test", new CMDAutoTest()); //this doesn't actually exist yet whoops
+	    //NarwhalDashboard.addAuto("Auto Test", new CmdAutoTest()); //do I need this?
+	    leftMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Constants.CAN_TIMEOUT);
+	    leftFollower.follow(leftMotor);
+	    rightMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Constants.CAN_TIMEOUT);
+	    rightFollower.follow(rightMotor);
     }
 
 	@Override
@@ -111,6 +116,11 @@ public class MainButton extends NarwhalRobot {
 		lm.nameControl(ControllerExtreme3D.TWIST, "MoveTurn");
 		lm.nameControl(ControllerExtreme3D.JOYY, "MoveForwards");
 		lm.nameControl(ControllerExtreme3D.THROTTLE, "Throttle");
+		
+		//auto stuff???????
+		lm.nameControl(new Button(0), "CmdAutoTest", () -> {
+			commands = new CmdAutoTest();
+			commands.start();
 
 		lm.addMultiListener(() -> {
 				    if (!driveCmdRunning.isRunning) { //??
