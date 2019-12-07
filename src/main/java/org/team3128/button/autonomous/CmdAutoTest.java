@@ -23,6 +23,13 @@ public class CmdAutoTest extends CommandGroup {
       addSequential(drive.new CmdDriveStraight(5 * Length.in, 0.5, 10000));
       addSequential(drive.new CmdInPlaceTurn(6, Direction.RIGHT, 0.5, 10000));
     }
-    addSequential(drive.new CmdInPlaceTurn(98 * Length.in, 0.5, 10000));
+    addSequential(drive.new CmdDriveStraight(57 * Length.in, 0.5, 10000));
+    addSequential(drive.new CmdInPlaceTurn(45, Direction.RIGHT, 0.5, 10000));
+    addSequential(drive.new CmdDriveStraight(27 * Length.in, 0.5, 10000));
+    addSequential(drive.new CmdInPlaceTurn(90, Direction.RIGHT, 0.5, 10000));
+    addSequential(drive.new CmdDriveStraight(21 * Length.in, 0.5, 10000));
+    addSequential(drive.new CmdInPlaceTurn(90, Direction.LEFT, 0.5, 10000));
+    addSequential(drive.new CmdDriveStraight(116 * Length.in, 0.5, 10000));
+    
   }
 }
