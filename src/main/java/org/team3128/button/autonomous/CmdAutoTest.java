@@ -14,7 +14,15 @@ public class CmdAutoTest extends CommandGroup {
     SRXTankDrive drive = SRXTankDrive.getInstance();
     
     //adds commands in a sequence. The large number at the end is the number of milliseconds it will wait to do the next command if it can't do that one
-    addSequential(drive.new CmdDriveStraight(100 * Length.in, 0.5, 10000));
-    addSequential(drive.new CmdInPlaceTurn(90, Direction.LEFT, 0.5, 10000));
+    addSequential(drive.new CmdDriveStraight(98 * Length.in, 0.5, 10000));
+    addSequential(drive.new CmdInPlaceTurn(45, Direction.RIGHT, 0.5, 10000));
+    addSequential(drive.new CmdDriveStraight(38 * Length.in, 0.5, 10000));
+    addSequential(drive.new CmdInPlaceTurn(105, Direction.LEFT, 0.5, 10000));
+    addSequential(drive.new CmdDriveStraight(58 * Length.in, 0.5, 10000));
+    for (int i = 0; i < 15; i++) {
+      addSequential(drive.new CmdDriveStraight(5 * Length.in, 0.5, 10000));
+      addSequential(drive.new CmdInPlaceTurn(6, Direction.RIGHT, 0.5, 10000));
+    }
+    addSequential(drive.new CmdInPlaceTurn(98 * Length.in, 0.5, 10000));
   }
 }
