@@ -105,6 +105,12 @@ public class MainButton extends NarwhalRobot {
 		waypoints.add(new Pose2D(0, 0, Rotation2D.fromDegrees(0)));
 		waypoints.add(new Pose2D(0 * Constants.inchesToMeters(), 39 * Constants.inchesToMeters(), Rotation2D.fromDegrees(90)));
 		waypoints.add(new Pose2D(27 * Constants.inchesToMeters(), 39 * Constants.inchesToMeters(), Rotation2D.fromDegrees(0)));
+		waypoints.add(new Pose2D(53 * Constants.inchesToMeters(), 39 * Constants.inchesToMeters(), Rotation2D.fromDegrees(90)));
+		waypoints.add(new Pose2D(53 * Constants.inchesToMeters(), 0 * Constants.inchesToMeters(), Rotation2D.fromDegrees(0)));
+		waypoints.add(new Pose2D(53 * Constants.inchesToMeters(), -39 * Constants.inchesToMeters(), Rotation2D.fromDegrees(90)));
+		waypoints.add(new Pose2D(96 * Constants.inchesToMeters(), -39 * Constants.inchesToMeters(), Rotation2D.fromDegrees(0)));
+		waypoints.add(new Pose2D(123 * Constants.inchesToMeters(), -39 * Constants.inchesToMeters(), Rotation2D.fromDegrees(90)));
+		waypoints.add(new Pose2D(123 * Constants.inchesToMeters(), 0 * Constants.inchesToMeters(), Rotation2D.fromDegrees(0)));
 		
 		trajectory = TrajectoryGenerator.generateTrajectory(waypoints, new ArrayList<TrajectoryConstraint>(), 0, 0,
                 120 * Constants.inchesToMeters, 0.5, false);
