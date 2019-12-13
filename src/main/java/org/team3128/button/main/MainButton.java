@@ -99,6 +99,15 @@ public class MainButton extends NarwhalRobot {
 		
 		SRXTankDrive.initialize(leftMotor, rightMotor, wheelCirc, wheelBase, driveMaxSpeed); //you should probably look at this method in the editor
 		drive = SRXTankDrive.getInstance();
+		
+		//coding vectors - x is x-component in meters (use * Constants.inchesToMeters) and so on
+		//waypoints.add(new Pose2D(double x, double y, Rotation2D.fromDegrees(angle)));
+		waypoints.add(new Pose2D(0, 0, Rotation2D.fromDegrees(0)));
+		waypoints.add(new Pose2D(0 * Constants.inchesToMeters(), 39 * Constants.inchesToMeters(), Rotation2D.fromDegrees(90)));
+		waypoints.add(new Pose2D(27 * Constants.inchesToMeters(), 39 * Constants.inchesToMeters(), Rotation2D.fromDegrees(0)));
+		
+		trajectory = TrajectoryGenerator.generateTrajectory(waypoints, new ArrayList<TrajectoryConstraint>(), 0, 0,
+                120 * Constants.inchesToMeters, 0.5, false);
 
     }
     
@@ -109,6 +118,11 @@ public class MainButton extends NarwhalRobot {
 	    leftFollower.follow(leftMotor);
 	    rightMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Constants.CAN_TIMEOUT);
 	    rightFollower.follow(rightMotor);
+	    
+	    scheduler.resume();
+	    robotTracker.resetOdometry();
+	    drive.setAutoTrajectory(trajectory, false);
+	    drive.startTrajectory();
     }
 
 	@Override
